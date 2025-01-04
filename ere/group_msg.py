@@ -1,3 +1,5 @@
+from logging import exception
+
 import redis
 from dataclasses import dataclass
 import json
@@ -61,7 +63,7 @@ def send_group_msg():
             wx.send_msg(group_name, [msg], [])
 
 
-    except redis.ConnectionError as e:
+    except exception as e:
         print(f"Connection error: {e}")
 
 
