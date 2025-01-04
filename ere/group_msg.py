@@ -52,8 +52,8 @@ def send_group_msg():
         for currency in currencies:
             currency_code = currency['currency_code']
             currency_name = currency['currency_name']
-            boc_currency = boc_rate_objects[currency[currency_code]].currentRate
-            icbc_currency = icbc_rate_objects[currency[currency_code]].currentRate
+            boc_currency = boc_rate_objects[currency_code].currentRate
+            icbc_currency = icbc_rate_objects[currency_code].currentRate
 
             msg = f'📢汇率速递·{currency_name} 现汇卖出价📢\n中国银行：{boc_currency}\n工商银行：{icbc_currency}\n时间：{current_time} ⏰'
 
