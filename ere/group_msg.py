@@ -75,8 +75,7 @@ scheduler.add_job(send_group_msg, trigger=CronTrigger.from_crontab("0 6-23 * * *
 
 # 启动调度器
 try:
-    while True:
-        send_group_msg()
-        scheduler.start()
+    # send_group_msg()
+    scheduler.start()
 except (KeyboardInterrupt, SystemExit):
     pass
