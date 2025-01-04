@@ -71,7 +71,8 @@ scheduler = BlockingScheduler()
 
 # 添加任务，使用 Cron 表达式
 # 表示每分钟的第 0 秒执行
-scheduler.add_job(send_group_msg, trigger=CronTrigger.from_crontab("0 6-23 * * *"))
+scheduler.add_job(send_group_msg, trigger=CronTrigger.from_crontab("0 6-23 * * 1-5"))
+scheduler.add_job(send_group_msg, trigger=CronTrigger.from_crontab("0 6 * * 6,7"))
 
 # 启动调度器
 try:
