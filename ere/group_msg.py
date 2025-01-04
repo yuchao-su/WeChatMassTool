@@ -52,12 +52,13 @@ def send_group_msg():
         for currency in currencies:
             currency_code = currency['currency_code']
             currency_name = currency['currency_name']
+            group_name = f'汇率速递-{currency_name}'
             boc_currency = boc_rate_objects[currency_code].currentRate
             icbc_currency = icbc_rate_objects[currency_code].currentRate
 
             msg = f'📢汇率速递·{currency_name} 现汇卖出价📢\n中国银行：{boc_currency}\n工商银行：{icbc_currency}\n时间：{current_time} ⏰'
 
-            wx.send_msg('汇率速递-日元', [msg], [])
+            wx.send_msg(group_name, [msg], [])
 
 
     except redis.ConnectionError as e:
