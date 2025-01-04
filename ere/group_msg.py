@@ -30,32 +30,35 @@ def send_group_msg():
         print(current_time)
 
         boc_rate = r.hgetall('ere:monitor:currentRate:BOC')
-
         # 转换为对象字典
         boc_rate_objects = {
             key.decode('utf-8'): Rate(**json.loads(value.decode('utf-8')))
             for key, value in boc_rate.items()
         }
 
-        boc_aud = boc_rate_objects['AUD'].currentRate
-        boc_krw = boc_rate_objects['KRW'].currentRate
-
         icbc_rate = r.hgetall('ere:monitor:currentRate:ICBC')
-
         # 转换为对象字典
         icbc_rate_objects = {
             key.decode('utf-8'): Rate(**json.loads(value.decode('utf-8')))
             for key, value in icbc_rate.items()
         }
 
-        icbc_aud = icbc_rate_objects['AUD'].currentRate
-        icbc_krw = icbc_rate_objects['KRW'].currentRate
 
-        aud_msg = f'📢汇率速递·澳元 现汇卖出价📢\n中国银行：{boc_aud}\n工商银行：{icbc_aud}\n时间：{current_time} ⏰'
-        krw_msg = f'📢汇率速递·韩元 现汇卖出价📢\n中国银行：{boc_krw}\n工商银行：{icbc_krw}\n时间：{current_time} ⏰'
 
-        wx.send_msg('汇率速递-日元', [aud_msg], [])
-        # wx.send_msg('汇率速递-韩元', [krw_msg], [])
+        currencies = [{"currency_code": "AUD", "currency_name": "澳元"}, {"currency_code": "KRW", "currency_name": "韩元"},
+                      {"currency_code": "JPY", "currency_name": "日元"}, {"currency_code": "USD", "currency_name": "美元"},
+                      {"currency_code": "GBP", "currency_name": "英镑"}, {"currency_code": "EUR", "currency_name": "欧元"}]
+
+        for currency in currencies:
+            currency_code = currency['currency_code']
+            currency_name = currency['currency_name']
+            boc_currency = boc_rate_objects[currency[currency_code]].currentRate
+            icbc_currency = icbc_rate_objects[currency[currency_code]].currentRate
+
+            msg = f'📢汇率速递·{currency_name} 现汇卖出价📢\n中国银行：{boc_currency}\n工商银行：{icbc_currency}\n时间：{current_time} ⏰'
+
+            wx.send_msg('汇率速递-日元', [msg], [])
+
 
     except redis.ConnectionError as e:
         print(f"Connection error: {e}")
